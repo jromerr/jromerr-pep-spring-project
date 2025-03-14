@@ -9,4 +9,7 @@ import com.example.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer>{
     @Query("FROM account WHERE username = :user")
     Account findByUsername(@Param("user") String username);
+
+    @Query("FROM account WHERE accountId = :id")
+    Account findByAccountId(@Param("id") Integer accId);
 }
