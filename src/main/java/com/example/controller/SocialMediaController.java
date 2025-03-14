@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.service.AccountService;
+import com.example.service.MessageService;
 
 
 
@@ -26,6 +29,12 @@ import com.example.entity.Message;
  */
 @RestController
 public class SocialMediaController {
+
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    MessageService messageService;
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody Account account){
