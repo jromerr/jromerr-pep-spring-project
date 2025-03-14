@@ -14,6 +14,17 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        return accountRepository.save(account);
+        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountRepository.findByUsername(account.getUsername())){
+            return accountRepository.save(account);
+        }
+        return null;
+    }
+
+    public Account loginAccount(Account account){
+        if(accountRepository.findByUsername(account.getUsername()) != null){
+            Account newAcc = accountRepository.findByUsername(account.getUsername())
+            if(account.getPassword().equals(newAcc.getPassword())) return newAcc;
+        }
+        return null;
     }
 }
