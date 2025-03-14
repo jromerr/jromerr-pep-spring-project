@@ -16,7 +16,7 @@ public class MessageService {
     }
 
     public Message addMessage(Message message){
-        if(message.getMessageText() != "" && message.getMessageText().length() < 255 && messageRepository.getByPostedBy(message.getPostedBy()) != null){
+        if(message.getMessageText() != "" && message.getMessageText().length() < 255 && messageRepository.findAllByPostedBy(message.getPostedBy()) != null){
             return messageRepository.save(message);
         }
         return null;
@@ -45,6 +45,6 @@ public class MessageService {
     }
 
     public List<Message> getAllMessagesFromAccount(int accountId){
-        return messageRepository.findAllbyPostedBy(accountId);
+        return messageRepository.findAllByPostedBy(accountId);
     }
 }
