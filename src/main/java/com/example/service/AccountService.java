@@ -14,7 +14,7 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountRepository.findByUsername(account.getUsername())){
+        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountRepository.findByUsername(account.getUsername()) == null){
             return accountRepository.save(account);
         }
         return null;
@@ -22,7 +22,7 @@ public class AccountService {
 
     public Account loginAccount(Account account){
         if(accountRepository.findByUsername(account.getUsername()) != null){
-            Account newAcc = accountRepository.findByUsername(account.getUsername())
+            Account newAcc = accountRepository.findByUsername(account.getUsername());
             if(account.getPassword().equals(newAcc.getPassword())) return newAcc;
         }
         return null;
