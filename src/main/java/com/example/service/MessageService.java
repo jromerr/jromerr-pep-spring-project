@@ -30,8 +30,8 @@ public class MessageService {
         return messageRepository.findByMessageId(messageId);
     }
 
-    public Message deleteMessage(int messageId){
-        return messageRepository.deleteByMessageId(messageId);
+    public int deleteMessage(int messageId){
+        return messageRepository.deleteByMessageIdAndGetCount(messageId);
     }
 
     public Message replaceMessage(Message message){
