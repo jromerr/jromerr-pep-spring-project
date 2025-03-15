@@ -31,10 +31,7 @@ public class MessageService {
     }
 
     public Message deleteMessage(int messageId){
-        if(messageRepository.findByMessageId(messageId) != null){
-            return messageRepository.deleteByMessageId(messageId);
-        }
-        return null;
+        return messageRepository.deleteByMessageId(messageId);
     }
 
     public Message replaceMessage(Message message){
