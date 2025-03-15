@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
@@ -37,8 +39,20 @@ public class SocialMediaController {
     MessageService messageService;
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody Account account){
-        return null;
+    public ResponseEntity<Account> registerUser(@RequestBody Account account){
+        Account accountExists = accountService.loginAccount(account);
+        if(accountExists == null){
+            Account addedAccount = accountService.addAccount(account);
+            if(addedAccount != null){
+                return ResponseEntity.status(200).body(addedAccount);
+            }
+            else{
+                //return ResponseEntity.status(400).body("Registration unsuccessful")
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Duplicate username");
+            }
+        }
+       //return ResponseEntity.status(409).body("Duplicate username");
+       throw new ResponseStatusException(HttpStatus.CONFLICT, "Duplicate username");
     }
 
     @PostMapping("/login")
