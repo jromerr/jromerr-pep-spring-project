@@ -34,9 +34,9 @@ public class MessageService {
         return messageRepository.deleteByMessageIdAndGetCount(messageId);
     }
 
-    public Message replaceMessage(Message message){
-        if(message.getMessageText() != "" && message.getMessageText().length() < 255 && messageRepository.findByMessageId(message.getMessageId()) != null){
-            return messageRepository.save(message);
+    public Integer replaceMessage(int messageId, String newMessage){
+        if(newMessage != "" && newMessage.length() < 255 && messageRepository.findByMessageId(messageId) != null){
+            return messageRepository.saveAndGetCount(newMessage, messageId);
         }
         return null;
     }
