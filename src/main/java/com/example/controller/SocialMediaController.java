@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,13 +67,18 @@ public class SocialMediaController {
     }
 
     @PostMapping("/messages")
-    public ResponseEntity newMessage(@RequestBody Message message){
-        return null;
+    public ResponseEntity<Message> newMessage(@RequestBody Message message){
+        Message addedMessage = messageService.addMessage(message);
+        if(addedMessage != null){
+            return ResponseEntity.status(200).body(addedMessage);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message creation unsuccessful");
     }
 
     @GetMapping("/messages")
-    public ResponseEntity getAllMessages(){
-        return null;
+    public ResponseEntity<List<Message>> getAllMessages(){
+        List<Message> allMessages = messageService.getAllMessages();
+        return ResponseEntity.status(200).body(allMessages);
     }
 
     @GetMapping("/messages/{messageId}")
