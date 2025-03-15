@@ -95,12 +95,15 @@ public class SocialMediaController {
     }
 
     @PatchMapping("/messages/{messageId}")
-    public ResponseEntity updateMessage(@PathVariable int messageId){
-        return null;
+    public ResponseEntity<Integer> updateMessage(@PathVariable int messageId, @RequestParam String messageText){
+        int updatedCount = messageService.replaceMessage(messageId, messageText);
+        if(updatedCount > 0) return ResponseEntity.status(200).body(updatedCount);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message update unsuccessful");
     }
 
     @GetMapping("accounts/{accountId}/messages")
-    public ResponseEntity getAllMessagesByUser(@PathVariable int accountId){
-        return null;
+    public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable int accountId){
+        List<Message> userMessages =messageService.getAllMessagesFromAccount(accountId);
+        return ResponseEntity.status(200).body(userMessages);
     }
 }
