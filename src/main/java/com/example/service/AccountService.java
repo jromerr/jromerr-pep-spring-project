@@ -1,14 +1,19 @@
 package com.example.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 
-@Service
+@Service("accountService")
 public class AccountService {
-    private final AccountRepository accountRepository;
+    @Autowired
+    @Qualifier("accountRepo")
+    AccountRepository accountRepository;
 
+    @Autowired
     public AccountService(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }

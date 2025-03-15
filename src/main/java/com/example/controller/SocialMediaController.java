@@ -3,6 +3,7 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,11 @@ import com.example.service.MessageService;
 public class SocialMediaController {
 
     @Autowired
+    @Qualifier("accountService")
     AccountService accountService;
 
     @Autowired
+    @Qualifier("messageService")
     MessageService messageService;
 
     @PostMapping("/register")
