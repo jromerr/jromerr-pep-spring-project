@@ -56,8 +56,12 @@ public class SocialMediaController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody Account account){
-        return null;
+    public ResponseEntity<Account> loginUser(@RequestBody Account account){
+        Account accountLogin = accountService.loginAccount(account);
+        if(accountLogin != null){
+            return ResponseEntity.status(200).body(accountLogin);
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login unsuccessful");
     }
 
     @PostMapping("/messages")
