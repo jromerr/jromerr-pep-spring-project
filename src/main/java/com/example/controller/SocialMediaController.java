@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +43,12 @@ public class SocialMediaController {
     @Autowired
     @Qualifier("messageService")
     MessageService messageService;
+
+    @Autowired
+    public SocialMediaController(AccountService accountService, MessageService messageService){
+        this.accountService = accountService;
+        this.messageService = messageService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Account> registerUser(@RequestBody Account account){
@@ -91,10 +98,11 @@ public class SocialMediaController {
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId){
+    public ResponseEntity<?> deleteMessageById(@PathVariable int messageId){
         int deletedCount = messageService.deleteMessage(messageId);
         if(deletedCount > 0) return ResponseEntity.status(200).body(deletedCount);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+        //return ResponseEntity.status(200).build();
     }
 
     @PatchMapping("/messages/{messageId}")
