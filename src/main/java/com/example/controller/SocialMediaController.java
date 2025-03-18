@@ -102,12 +102,11 @@ public class SocialMediaController {
         int deletedCount = messageService.deleteMessage(messageId);
         if(deletedCount > 0) return ResponseEntity.status(200).body(deletedCount);
         return new ResponseEntity<Void>(HttpStatus.OK);
-        //return ResponseEntity.status(200).build();
     }
 
     @PatchMapping("/messages/{messageId}")
-    public ResponseEntity<Integer> updateMessage(@PathVariable int messageId, @RequestParam String messageText){
-        int updatedCount = messageService.replaceMessage(messageId, messageText);
+    public ResponseEntity<Integer> updateMessage(@PathVariable int messageId, @RequestBody Message message){
+        int updatedCount = messageService.replaceMessage(messageId, message.getMessageText());
         if(updatedCount > 0) return ResponseEntity.status(200).body(updatedCount);
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message update unsuccessful");
     }

@@ -1,7 +1,6 @@
 package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
@@ -10,7 +9,6 @@ import com.example.repository.AccountRepository;
 @Service("accountService")
 public class AccountService {
     //@Autowired
-    //@Qualifier("accountRepo")
     AccountRepository accountRepository;
 
     @Autowired

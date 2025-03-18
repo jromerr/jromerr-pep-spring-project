@@ -1,9 +1,9 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
@@ -13,7 +13,6 @@ import com.example.repository.MessageRepository;
 @Service("messageService")
 public class MessageService {
     //@Autowired
-    //@Qualifier("messageRepo")
     MessageRepository messageRepository;
 
     AccountRepository accountRepository;
@@ -36,27 +35,34 @@ public class MessageService {
     }
 
     public Message getMessageByMessageId(int messageId){
-        //return messageRepository.findByMessageId(messageId);
-        return messageRepository.findById(messageId).get();
+        Optional<Message> optionalMessage = messageRepository.findById(messageId);
+        if(optionalMessage.isPresent()){
+            Message message = optionalMessage.get();
+            return message;
+        }
+        return null;
     }
 
     public int deleteMessage(int messageId){
-        //return messageRepository.deleteByMessageIdAndGetCount((Integer)messageId);
-        int rowsDeleted = (int) messageRepository.countByMessageId(messageId);
-        messageRepository.deleteById(messageId);
-        return rowsDeleted;
+        Optional<Message> optionalMessage = messageRepository.findById(messageId);
+        if(optionalMessage.isPresent()){
+            int rowsDeleted = (int) messageRepository.countByMessageId(messageId);
+            messageRepository.deleteById(messageId);
+            return rowsDeleted;
+        }
+        return 0;
     }
 
-    public Integer replaceMessage(int messageId, String newMessage){
-        if(newMessage != "" && newMessage.length() <= 255 && messageRepository.findById(messageId).isPresent()){
-            //return messageRepository.saveAndGetCount(newMessage, messageId);
+    public int replaceMessage(int messageId, String newMessage){
+        Optional<Message> optionalMessage = messageRepository.findById(messageId);
+        if(newMessage != "" && newMessage.length() <= 255 && optionalMessage.isPresent()){
             int rowsUpdated = (int) messageRepository.countByMessageId(messageId);
-            Message updatedMessage = messageRepository.findById(messageId).get();
+            Message updatedMessage = optionalMessage.get();
             updatedMessage.setMessageText(newMessage);
             messageRepository.save(updatedMessage);
             return rowsUpdated;
         }
-        return null;
+        return 0;
     }
 
     public List<Message> getAllMessagesFromAccount(int accountId){
